@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Title url:</strong>
-  <%= @newsville.title_url %>
+  <strong>View:</strong>
+  <%= link_to "Original Story", @newsville.title_url, :target => "_" %></td>
 </p>
 
 <p>
@@ -11,19 +11,30 @@
 </p>
 
 <p>
-  <strong>Body:</strong>
+  <strong>Heading:</strong>
   <%= @newsville.body %>
 </p>
 
 <p>
-  <strong>Time:</strong>
-  <%= @newsville.time %>
+  <strong>Posted:</strong>
+   <%= time_ago_in_words(@newsville.created_at) %> ago
 </p>
 
 <p>
-  <strong>Image url:</strong>
-  <%= @newsville.image_url %>
+  <strong>Story Image:</strong><br />
+   <% if @newsville.image_url.present? %>
+    <td><%= image_tag @newsville.image_url %></td>
+  <% else %>
+    <td><%= image_tag 'nia.jpeg' %></td>
+  <% end %>
 </p>
 
-<%= link_to 'Edit', edit_newsville_path(@newsville) %> |
-<%= link_to 'Back', newsvilles_path %>
+<hr>
+
+<%= render @newsville.comments %>
+  <%= simple_form_for [@newsville, Comment.new] do |comment| %>
+    <%= comment.input :body, label: false, placeholder: "Add your comments here" %>
+    <%= comment.submit "Add Comment", class: "btn btn-danger" %>
+    <% end %>
+    <hr>
+    <%= link_to 'Back to Newsville', newsvilles_path, class: "btn btn-info xs" %>
